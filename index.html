@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reprodutor de Vídeo</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        video {
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 20px;
+        }
+        button {
+            margin: 5px;
+            padding: 10px 15px;
+            font-size: 16px;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <input type="file" id="fileInput" accept="video/*">
+    <video id="video" controls>
+        Seu navegador não suporta o elemento de vídeo.
+    </video>
+
+    <div>
+        <button onclick="playVideo()">Tocar</button>
+        <button onclick="pauseVideo()">Pausar</button>
+        <button onclick="rewindVideo()">Voltar 10s</button>
+        <button onclick="forwardVideo()">Avançar 10s</button>
+        <button onclick="changePlaybackRate(1)">Normal</button>
+        <button onclick="changePlaybackRate(1.5)">1.5x</button>
+        <button onclick="changePlaybackRate(2)">2x</button>
+    </div>
+
+    <p class="footer">Feito por Enzo</p>
+
+    <script>
+        const video = document.getElementById('video');
+        const fileInput = document.getElementById('fileInput');
+
+        // Função para carregar o vídeo selecionado
+        fileInput.addEventListener('change', function() {
+            const file = fileInput.files[0];
+            if (file) {
+                const fileURL = URL.createObjectURL(file);
+                video.src = fileURL;
+                video.load(); // Carrega o novo vídeo
+                video.play(); // Inicia a reprodução automaticamente após carregar
+            }
+        });
+
+        function playVideo() {
+            if (video.src) {
+                video.play();
+            }
+        }
+
+        function pauseVideo() {
+            if (video.src) {
+                video.pause();
+            }
+        }
+
+        function rewindVideo() {
+            if (video.src) {
+                video.currentTime = Math.max(0, video.currentTime - 10); // Volta 10 segundos, mas não permite ir para um tempo negativo
+            }
+        }
+
+        function forwardVideo() {
+            if (video.src) {
+                video.currentTime = Math.min(video.duration, video.currentTime + 10); // Avança 10 segundos, mas não permite ultrapassar a duração do vídeo
+            }
+        }
+
+        function changePlaybackRate(rate) {
+            if (video.src) {
+                video.playbackRate = rate;
+            }
+        }
+    </script>
+
+</body>
+</html>
